@@ -1,0 +1,1 @@
+# typesafe-query-builder-playground
