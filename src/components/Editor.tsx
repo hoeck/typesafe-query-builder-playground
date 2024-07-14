@@ -1,10 +1,11 @@
-import { VFC, useRef, useState, useEffect } from "react";
+import * as React from "react";
+import { VFC, useRef, useState, useEffect, createRef } from "react";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import styles from "./Editor.module.css";
 
 const anyGlobalThis: any = globalThis;
 
-export const Editor: VFC = () => {
+export const Editor: VFC<{ size: number }> = (props) => {
   const [editor, setEditor] =
     useState<monaco.editor.IStandaloneCodeEditor | null>(null);
   const monacoEl = useRef(null);
@@ -33,8 +34,10 @@ export const Editor: VFC = () => {
             "",
           ].join("\n"),
           language: "typescript",
+          minimap: { enabled: false },
         });
 
+        anyGlobalThis.globalMonacoEditor = monacoEditor;
         anyGlobalThis.globalEditor = monaco.editor;
 
         editorStartup(monacoEditor);
@@ -43,37 +46,68 @@ export const Editor: VFC = () => {
       });
     }
 
-    return () => editor?.dispose();
+    return () => {
+      editor?.dispose();
+    };
   }, [monacoEl.current]);
 
-  return <div className={styles.Editor} ref={monacoEl}></div>;
+  useEffect(() => {
+    function resize() {
+      editor?.layout();
+    }
+
+    window.addEventListener("resize", resize);
+
+    return () => {
+      window.removeEventListener("resize", resize);
+    };
+  }, [editor]);
+
+  useEffect(() => {
+    editor?.layout();
+  }, [props.size]);
+
+  return (
+    <div
+      style={{ width: `${props.size}px` }}
+      className={styles.Editor}
+      ref={monacoEl}
+    ></div>
+  );
 };
+
+async function loadFileIntoEditor(params: {
+  httpPath: string;
+  monacoUri: string;
+}) {
+  const hasModel = monaco.editor
+    .getModels()
+    .some((m) => m.uri.toString() === params.monacoUri);
+
+  if (!hasModel) {
+    const packageJsonSource = await (await fetch(params.httpPath)).text();
+
+    monaco.editor.createModel(
+      packageJsonSource,
+      "typescript",
+      monaco.Uri.parse(params.monacoUri),
+    );
+  }
+}
 
 async function editorStartup(editor: monaco.editor.IStandaloneCodeEditor) {
   // TODO: a buildstep that copies the typesafe-query-builder files over to
   // dist/ as .txt to not mangle with vite dev server js processing
 
-  const packageJsonSource = await (
-    await fetch("dist/typesafe-query-builder.package.json.txt")
-  ).text();
-
-  monaco.editor.createModel(
-    packageJsonSource,
-    "typescript",
-    monaco.Uri.parse(
+  const queryBuilderPackageJson = await loadFileIntoEditor({
+    httpPath: "dist/typesafe-query-builder.package.json.txt",
+    monacoUri:
       "inmemory://model/node_modules/typesafe-query-builder/package.json",
-    ),
-  );
+  });
 
-  const indexDtsSource = await (
-    await fetch("dist/typesafe-query-builder.index.d.ts.txt")
-  ).text();
-
-  monaco.editor.createModel(
-    indexDtsSource,
-    "typescript",
-    monaco.Uri.parse(
+  await loadFileIntoEditor({
+    httpPath: "dist/typesafe-query-builder.index.d.ts.txt",
+    monacoUri:
       "inmemory://model/node_modules/typesafe-query-builder/dist/index.d.ts",
-    ),
-  );
+  });
 }

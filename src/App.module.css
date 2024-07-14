@@ -1,0 +1,22 @@
+.Header {
+  font-size: medium;
+  padding: 0.5rem;
+}
+
+.Panels {
+  display: flex;
+
+  .Divider {
+    width: 0.5rem;
+    background-color: #eee;
+    cursor: col-resize;
+
+    &:hover {
+      background-color: #aaa;
+    }
+  }
+
+  .Result {
+    flex-basis: 50%;
+  }
+}
