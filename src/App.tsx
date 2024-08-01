@@ -1,7 +1,7 @@
 import "@mantine/core/styles.css";
 import React from "react";
 import styles from "./App.module.css";
-import { Editor } from "./components/Editor";
+import { Editor, getJsCode } from "./components/Editor";
 
 export const App: React.VFC = () => {
   const [width, setWidth] = React.useState(
@@ -12,6 +12,7 @@ export const App: React.VFC = () => {
   return (
     <>
       <h1 className={styles.Header}>Typesafe Query Builder Playground</h1>
+      <button onClick={runCode}>RUN</button>
       <div className={styles.Panels}>
         <div className={styles.Editor}>
           <Editor size={width} />;
@@ -44,3 +45,13 @@ export const App: React.VFC = () => {
     </>
   );
 };
+
+async function runCode() {
+  const panelCode = await getJsCode();
+  const timestampToForceReevaluation = `\n\nconst x${Date.now()} = false`;
+  const encodedJs = encodeURIComponent(
+    panelCode + timestampToForceReevaluation,
+  );
+  const dataUri = `data:text/javascript;charset=utf-8,${encodedJs}`;
+  const result = await eval("import(dataUri)");
+}

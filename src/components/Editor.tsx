@@ -26,13 +26,7 @@ export const Editor: VFC<{ size: number }> = (props) => {
         });
 
         const monacoEditor = monaco.editor.create(monacoEl.current!, {
-          value: [
-            "import {query} from 'typesafe-query-builder'",
-            "",
-            "",
-            "",
-            "",
-          ].join("\n"),
+          value: ["// loading"].join("\n"),
           language: "typescript",
           minimap: { enabled: false },
         });
@@ -99,7 +93,17 @@ async function editorStartup(editor: monaco.editor.IStandaloneCodeEditor) {
   // TODO: a buildstep that copies the typesafe-query-builder files over to
   // dist/ as .txt to not mangle with vite dev server js processing
 
-  const queryBuilderPackageJson = await loadFileIntoEditor({
+  const textModel = monaco.editor.getModel(
+    monaco.Uri.parse("inmemory://model/1"),
+  );
+
+  if (textModel) {
+    const exampleTs = await (await fetch("dist/example.ts")).text();
+
+    textModel.setValue(exampleTs);
+  }
+
+  await loadFileIntoEditor({
     httpPath: "dist/typesafe-query-builder.package.json.txt",
     monacoUri:
       "inmemory://model/node_modules/typesafe-query-builder/package.json",
@@ -110,4 +114,16 @@ async function editorStartup(editor: monaco.editor.IStandaloneCodeEditor) {
     monacoUri:
       "inmemory://model/node_modules/typesafe-query-builder/dist/index.d.ts",
   });
+}
+
+export async function getJsCode() {
+  const models = monaco.editor
+    .getModels()
+    .filter((m) => m.uri.toString().endsWith("/1"));
+  const tsWorker = await (
+    await monaco.languages.typescript.getTypeScriptWorker()
+  )(...models.map((m) => m.uri));
+  const emitted = await tsWorker.getEmitOutput(models[0].uri.toString());
+
+  return emitted.outputFiles[0].text;
 }

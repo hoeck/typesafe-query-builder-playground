@@ -1,12 +1,21 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>browser-esm-vite-react</title>
-	</head>
-	<body>
-		<div id="root"></div>
-		<script type="module" src="/src/main.tsx"></script>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Typesafe Query Builder Playground</title>
+  </head>
+  <script type="importmap">
+    {
+      "imports": {
+        "typesafe-query-builder": "./dist/typesafe-query-builder.index.mjs",
+        "util": "./dist/node.util.mjs",
+        "assert": "./dist/node.assert.mjs"
+      }
+    }
+  </script>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
