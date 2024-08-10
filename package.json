@@ -6,10 +6,10 @@
   "author": "Erik Soehnel <eriksoehnel@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "copy-query-builder-deps": "cp mocks/assert.mjs dist/node.assert.mjs && cp mocks/util.mjs dist/node.util.mjs",
-    "copy-query-builder-sources": "cp node_modules/typesafe-query-builder/package.json dist/typesafe-query-builder.package.json.txt && cp node_modules/typesafe-query-builder/dist/index.d.ts dist/typesafe-query-builder.index.d.ts.txt && cp node_modules/typesafe-query-builder/dist/index.js dist/typesafe-query-builder.index.mjs",
+    "copy-query-builder-sources": "cp node_modules/typesafe-query-builder/package.json dist/typesafe-query-builder.package.json.txt && cp node_modules/typesafe-query-builder/dist/index.d.ts dist/typesafe-query-builder.index.d.ts.txt && cp node_modules/typesafe-query-builder/dist/index.js dist/typesafe-query-builder.index.mjs && cp node_modules/typesafe-query-builder/dist/index.js.map dist/typesafe-query-builder.index.mjs.map && sed -i s/sourceMappingURL=index.js.map/sourceMappingURL=typesafe-query-builder.index.mjs.map/ dist/typesafe-query-builder.index.mjs",
+    "copy-playground-sources": "cp playground/example.ts dist/example.ts.txt",
     "dev": "vite",
-    "build": "tsc && vite build && cp example.ts dist/ && npm run copy-query-builder-sources && npm run copy-query-builder-deps",
+    "build": "tsc && vite build && npm run copy-playground-sources && npm run copy-query-builder-sources",
     "serve": "vite preview",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "simpleserver": "node ../node_modules/yaserver/bin/yaserver --root ./dist --port 9999"
@@ -35,6 +35,7 @@
     "react-dom": "^18.3.1",
     "typesafe-query-builder": "^4.0.0-rc.1",
     "typescript": "^5.5.4",
-    "vite": "^5.3.5"
+    "vite": "^5.3.5",
+    "vite-plugin-node-polyfills": "^0.22.0"
   }
 }

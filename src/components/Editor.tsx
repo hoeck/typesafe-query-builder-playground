@@ -98,7 +98,7 @@ async function editorStartup(editor: monaco.editor.IStandaloneCodeEditor) {
   );
 
   if (textModel) {
-    const exampleTs = await (await fetch("dist/example.ts")).text();
+    const exampleTs = await (await fetch("dist/example.ts.txt")).text();
 
     textModel.setValue(exampleTs);
   }
