@@ -3,6 +3,7 @@ import "@mantine/core/styles.css";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
+import "./database.ts";
 import { theme } from "./theme";
 import "./userWorker";
 
