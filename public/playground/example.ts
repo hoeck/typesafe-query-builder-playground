@@ -1,5 +1,5 @@
 import { query, table, column as col } from "typesafe-query-builder";
-import { db } from "playground-database";
+import { db, show } from "playground";
 
 export const Manufacturers = table("classicgames.manufacturers", {
   id: col("id").integer().primary().default(),
@@ -16,4 +16,4 @@ export const Systems = table("classicgames.systems", {
 
 const res = await query(Manufacturers).select(Manufacturers.all()).fetch(db);
 
-console.log(res);
+show(res);

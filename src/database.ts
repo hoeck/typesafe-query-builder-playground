@@ -2,6 +2,7 @@ import { PGlite } from "@electric-sql/pglite";
 
 const db = new PGlite();
 
+// expose db via global var to playground-database module
 (window as any).db = db;
 
 const script = `

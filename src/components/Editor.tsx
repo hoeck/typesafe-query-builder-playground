@@ -31,6 +31,7 @@ export const Editor: VFC<{ size: number }> = (props) => {
           minimap: { enabled: false },
         });
 
+        // just for debugging
         anyGlobalThis.globalMonacoEditor = monacoEditor;
         anyGlobalThis.globalEditor = monaco.editor;
 
@@ -123,18 +124,16 @@ async function editorStartup(editor: monaco.editor.IStandaloneCodeEditor) {
       "inmemory://model/node_modules/typesafe-query-builder/dist/index.d.ts",
   });
 
-  // fake "playground-database" lib
+  // fake "playground" lib
   monaco.editor.createModel(
     JSON.stringify({ type: "module", types: "index.d.ts", main: "index.js" }),
     "typescript",
-    monaco.Uri.parse(
-      "inmemory://model/node_modules/playground-database/package.json",
-    ),
+    monaco.Uri.parse("inmemory://model/node_modules/playground/package.json"),
   );
 
   await loadFileIntoEditor({
-    httpPath: "playground/playground-database.d.ts",
-    monacoUri: "inmemory://model/node_modules/playground-database/index.d.ts",
+    httpPath: "playground/playground.d.ts",
+    monacoUri: "inmemory://model/node_modules/playground/index.d.ts",
   });
 }
 

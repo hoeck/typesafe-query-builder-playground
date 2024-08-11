@@ -2,6 +2,7 @@ import "@mantine/core/styles.css";
 import React from "react";
 import styles from "./App.module.css";
 import { Editor, getJsCode } from "./components/Editor";
+import { Result } from "./components/Result";
 
 export const App: React.VFC = () => {
   const [width, setWidth] = React.useState(
@@ -39,7 +40,7 @@ export const App: React.VFC = () => {
           }}
         />
         <div className={styles.Result}>
-          <h1>RESULT</h1>{" "}
+          <Result />
         </div>
       </div>
     </>

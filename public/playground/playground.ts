@@ -28,6 +28,7 @@ const escapeLiteral = function (str: string) {
   return escaped;
 };
 
+// database client for the playgrounds pglite instance
 export const db = {
   query(
     sql: string,
@@ -53,3 +54,8 @@ export const db = {
     return escapeIdentifier(value);
   },
 };
+
+// display a value in the results tab
+export function show(value: any) {
+  (globalThis as any).resultSetValue({ value });
+}
