@@ -138,9 +138,21 @@ SELECT pg_catalog.setval('classicgames.devices_id_seq', 7, false);
 `;
 
 async function loadExampleDatabase() {
-  for (const piece of script.split(";")) {
-    await db.query(piece);
+  const statements = script.split(";");
+
+  try {
+    console.log("loading example database");
+
+    for (let i = 0; i < statements.length; i++) {
+      console.log("statement", i + 1, "of", statements.length);
+
+      await db.query(statements[i]);
+    }
+
+    console.log("done");
+  } catch (e) {
+    console.error("error");
   }
 }
 
-await loadExampleDatabase();
+loadExampleDatabase();

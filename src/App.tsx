@@ -52,6 +52,7 @@ async function runCode() {
   const encodedJs = encodeURIComponent(
     panelCode + timestampToForceReevaluation,
   );
+
   const dataUri = `data:text/javascript;charset=utf-8,${encodedJs}`;
   const result = await eval("import(dataUri)");
 }

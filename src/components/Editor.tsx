@@ -34,7 +34,9 @@ export const Editor: VFC<{ size: number }> = (props) => {
         anyGlobalThis.globalMonacoEditor = monacoEditor;
         anyGlobalThis.globalEditor = monaco.editor;
 
-        editorStartup(monacoEditor);
+        editorStartup(monacoEditor).catch((e) => {
+          console.error("error while loading editor files", e);
+        });
 
         return monacoEditor;
       });
@@ -79,10 +81,10 @@ async function loadFileIntoEditor(params: {
     .some((m) => m.uri.toString() === params.monacoUri);
 
   if (!hasModel) {
-    const packageJsonSource = await (await fetch(params.httpPath)).text();
+    const source = await (await fetch(params.httpPath)).text();
 
     monaco.editor.createModel(
-      packageJsonSource,
+      source,
       "typescript",
       monaco.Uri.parse(params.monacoUri),
     );
@@ -98,21 +100,41 @@ async function editorStartup(editor: monaco.editor.IStandaloneCodeEditor) {
   );
 
   if (textModel) {
-    const exampleTs = await (await fetch("dist/example.ts.txt")).text();
+    const exampleTs = await (await fetch("playground/example.ts")).text();
 
     textModel.setValue(exampleTs);
   }
 
   await loadFileIntoEditor({
-    httpPath: "dist/typesafe-query-builder.package.json.txt",
+    httpPath: "playground/typesafe-query-builder/package.json",
     monacoUri:
       "inmemory://model/node_modules/typesafe-query-builder/package.json",
   });
 
   await loadFileIntoEditor({
-    httpPath: "dist/typesafe-query-builder.index.d.ts.txt",
+    httpPath: "playground/typesafe-query-builder/dist/index.d.ts",
     monacoUri:
       "inmemory://model/node_modules/typesafe-query-builder/dist/index.d.ts",
+  });
+
+  await loadFileIntoEditor({
+    httpPath: "playground/typesafe-query-builder/dist/index.d.ts",
+    monacoUri:
+      "inmemory://model/node_modules/typesafe-query-builder/dist/index.d.ts",
+  });
+
+  // fake "playground-database" lib
+  monaco.editor.createModel(
+    JSON.stringify({ type: "module", types: "index.d.ts", main: "index.js" }),
+    "typescript",
+    monaco.Uri.parse(
+      "inmemory://model/node_modules/playground-database/package.json",
+    ),
+  );
+
+  await loadFileIntoEditor({
+    httpPath: "playground/playground-database.d.ts",
+    monacoUri: "inmemory://model/node_modules/playground-database/index.d.ts",
   });
 }
 

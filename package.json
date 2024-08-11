@@ -6,10 +6,11 @@
   "author": "Erik Soehnel <eriksoehnel@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "copy-query-builder-sources": "cp node_modules/typesafe-query-builder/package.json dist/typesafe-query-builder.package.json.txt && cp node_modules/typesafe-query-builder/dist/index.d.ts dist/typesafe-query-builder.index.d.ts.txt && cp node_modules/typesafe-query-builder/dist/index.js dist/typesafe-query-builder.index.mjs && cp node_modules/typesafe-query-builder/dist/index.js.map dist/typesafe-query-builder.index.mjs.map && sed -i s/sourceMappingURL=index.js.map/sourceMappingURL=typesafe-query-builder.index.mjs.map/ dist/typesafe-query-builder.index.mjs",
+    "copy-query-builder-sources": "cp -r node_modules/typesafe-query-builder public/playground/",
     "copy-playground-sources": "cp playground/example.ts dist/example.ts.txt",
+    "build-playground-sources": "tsc --target esnext --lib esnext --declaration --module esnext --moduleResolution node --outDir public/playground public/playground/playground-database.ts",
     "dev": "vite",
-    "build": "tsc && vite build && npm run copy-playground-sources && npm run copy-query-builder-sources",
+    "build": "tsc --noEmit && vite build && mv dist/playground-database.index.d.ts dist/playground-database.index.d.ts.txt && npm run copy-query-builder-sources && npm run copy-playground-sources && npm run build-playground-sources",
     "serve": "vite preview",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "simpleserver": "node ../node_modules/yaserver/bin/yaserver --root ./dist --port 9999"
@@ -18,6 +19,7 @@
     "@electric-sql/pglite": "^0.1.5",
     "@mantine/core": "^7.11.2",
     "@mantine/hooks": "^7.11.2",
+    "@types/node": "^22.2.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
