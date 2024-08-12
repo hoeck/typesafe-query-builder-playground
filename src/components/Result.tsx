@@ -1,8 +1,7 @@
-import * as React from "react";
-import { VFC, useRef, useState, useEffect, createRef } from "react";
 import JsonView from "@uiw/react-json-view";
+import { useEffect, useState } from "react";
 
-export const Result: VFC<{ size: number }> = (props) => {
+export const Result = () => {
   const [value, setValue] = useState<{ value: any } | null>(null);
 
   useEffect(() => {

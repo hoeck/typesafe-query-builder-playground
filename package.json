@@ -7,10 +7,10 @@
   "license": "MIT",
   "scripts": {
     "copy-query-builder-sources": "cp -r node_modules/typesafe-query-builder public/playground/",
-    "copy-playground-sources": "cp playground/example.ts dist/example.ts.txt",
     "build-playground-sources": "tsc --target esnext --lib esnext --declaration --module esnext --moduleResolution node --outDir public/playground public/playground/playground.ts",
     "dev": "vite",
-    "build": "tsc --noEmit && vite build && mv dist/playground.index.d.ts dist/playground.index.d.ts.txt && npm run copy-query-builder-sources && npm run copy-playground-sources && npm run build-playground-sources",
+    "build-playground": "npm run copy-query-builder-sources && npm run build-playground-sources",
+    "build": "tsc --noEmit && npm run build-playground && vite build",
     "serve": "vite preview",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "simpleserver": "node ../node_modules/yaserver/bin/yaserver --root ./dist --port 9999"
