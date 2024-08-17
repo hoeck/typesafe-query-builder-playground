@@ -4,6 +4,8 @@ import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // base path for gh-pages
+  base: "typesafe-query-builder-playground",
   plugins: [
     react(),
     // Didn't work with my own little polyfills as the vite dev
