@@ -55,6 +55,8 @@ async function runCode() {
   );
 
   await eval(
-    "import(" + `data:text/javascript;charset=utf-8,${encodedJs}` + ")",
+    "import(" +
+      JSON.stringify("data:text/javascript;charset=utf-8," + encodedJs) +
+      ")",
   );
 }
