@@ -1,41 +1,18 @@
 # typesafe-query-builder-playground
 
-- gh docs for hosting
-- https://github.com/electric-sql/pglite to run pg in the browser
-- https://github.com/fabiandev/typescript-playground
-- simple build or no build at all (maybe preact + esbuild / rollup)?
+[TRY IT NOW](https://hoeck.github.io/typesafe-query-builder-playground/)
 
-- layout:
-  ```
-  +-----------+------------+------+
-  | schema.ts | typescript | sql  |
-  +-----------+            +------+
-  |                               |
-  |                               |
-  |                               |
-  +-------------------------------+
-  | result / output               |
-  |                               |
-  +-------------------------------+
-  ```
+## Development
 
-## pglite
-
-- super easy to use with @electric-sql/pglite
-
-## Monaco
-
-- use monaco esm vite react example
-- https://github.com/lukasbach/monaco-editor-auto-typings/ to fetch the library ?
-- get compiled js:
+1. Build all playground files:
 
 ```
-const tsWorker = await monaco.languages.typescript.getTypeScriptWorker()
-const files = await tsWorker.getScriptFileNames()
-const emitted = await tsWorker.getEmitOutput(files[0])
-
-console.log(emitted.outputFiles[0].text)
+npm run build-playground-sources
+npm run copy-query-builder-sources
 ```
 
-- how to edit multiple files?: playground file, schema file
-  - or just use a single schema for now
+2. Run the vite dev server:
+
+```
+npm run dev
+```
