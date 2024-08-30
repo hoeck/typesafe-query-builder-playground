@@ -4,6 +4,7 @@ import React from "react";
 import styles from "./App.module.css";
 import { Editor, getJsCode } from "./components/Editor";
 import { Result } from "./components/Result";
+import { Sql } from "./components/Sql";
 
 export const App: React.VFC = () => {
   const [width, setWidth] = React.useState(
@@ -60,9 +61,11 @@ export const App: React.VFC = () => {
               <Result />
             </Tabs.Panel>
 
-            <Tabs.Panel value="sql"></Tabs.Panel>
+            <Tabs.Panel value="sql">
+              <Sql />
+            </Tabs.Panel>
 
-            <Tabs.Panel value="log"></Tabs.Panel>
+            <Tabs.Panel value="log">LOG</Tabs.Panel>
           </Tabs>
         </div>
       </div>
@@ -71,6 +74,9 @@ export const App: React.VFC = () => {
 };
 
 async function runCode() {
+  (globalThis as any).sqlLogReset();
+  (globalThis as any).resultSetValue(null);
+
   const panelCode = await getJsCode();
   const timestampToForceReevaluation = `\n\nconst x${Date.now()} = false`;
   const encodedJs = encodeURIComponent(

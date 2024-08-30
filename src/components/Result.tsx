@@ -15,8 +15,6 @@ export const Result = () => {
     return;
   }
 
-  console.log("typeof value", typeof value, value);
-
   if (
     value.value === null ||
     typeof value.value === "number" ||
@@ -38,6 +36,7 @@ export const Result = () => {
       displayObjectSize={false}
       collapsed={false}
       value={value.value}
+      style={{ fontSize: "14px" }}
     />
   );
 };

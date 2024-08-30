@@ -38,12 +38,17 @@ export const db = {
     rowCount: number;
   }> {
     const pgLite: any = (globalThis as any).db;
+    const sqlLog: any = (globalThis as any).sqlLog;
 
     if (!pgLite) {
-      throw new Error("pgLite is not initialized");
+      throw new Error("global pgLite is not initialized");
     }
 
-    console.log(sql, values);
+    if (!sqlLog) {
+      throw new Error("global sqlLog is not initialized");
+    }
+
+    sqlLog(sql, values);
 
     return pgLite.query(sql, values);
   },
