@@ -23,6 +23,7 @@ export const Editor: VFC<{ size: number }> = (props) => {
             monaco.languages.typescript.ModuleResolutionKind.NodeJs,
           allowNonTsExtensions: true,
           target: monaco.languages.typescript.ScriptTarget.ES2020,
+          module: monaco.languages.typescript.ModuleKind.ESNext,
         });
 
         const monacoEditor = monaco.editor.create(monacoEl.current!, {
@@ -93,9 +94,6 @@ async function loadFileIntoEditor(params: {
 }
 
 async function editorStartup(editor: monaco.editor.IStandaloneCodeEditor) {
-  // TODO: a buildstep that copies the typesafe-query-builder files over to
-  // dist/ as .txt to not mangle with vite dev server js processing
-
   const textModel = monaco.editor.getModel(
     monaco.Uri.parse("inmemory://model/1"),
   );

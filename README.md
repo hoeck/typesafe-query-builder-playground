@@ -4,6 +4,12 @@
 
 ## Development
 
+0. Install
+
+```
+npm install
+```
+
 1. Build all playground files:
 
 ```
@@ -16,3 +22,11 @@ npm run copy-query-builder-sources
 ```
 npm run dev
 ```
+
+## Built with
+
+- [PGlite](https://pglite.dev/) - tiny real Postgres server that runs in the browser using WASM
+- [Monaco Editor](https://microsoft.github.io/monaco-editor/) - somehow supports Typescript out of the box
+- [Mantine](https://mantine.dev/) - surprised how good this React component library is
+
+and Typescript, React, Vite - my goto stack atm.
