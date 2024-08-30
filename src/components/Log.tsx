@@ -25,7 +25,7 @@ export const Log = () => {
 
         v.logParams.forEach((p, i) => {
           if (typeof p === "object") {
-            elements.push(JSON.stringify(p));
+            elements.push(JSON.stringify(p, null, 2));
           } else if (p === "\n") {
             elements.push(<br key={(i + 2) ** 2} />);
           } else {
