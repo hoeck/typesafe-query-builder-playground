@@ -4,6 +4,7 @@ import { useDisclosure } from "@mantine/hooks";
 import React from "react";
 import styles from "./App.module.css";
 import { Editor, getJsCode } from "./components/Editor";
+import { Log } from "./components/Log";
 import { Result } from "./components/Result";
 import { Sql } from "./components/Sql";
 
@@ -63,7 +64,9 @@ const PlaygroundMain: React.VFC = () => {
             <Sql />
           </Tabs.Panel>
 
-          <Tabs.Panel value="log">LOG</Tabs.Panel>
+          <Tabs.Panel value="log" style={{ overflow: "auto", width: "100%" }}>
+            <Log />
+          </Tabs.Panel>
         </Tabs>
       </div>
     </div>
@@ -123,8 +126,9 @@ export function App() {
 }
 
 async function runCode() {
-  (globalThis as any).sqlLogReset();
   (globalThis as any).resultSetValue(null);
+  (globalThis as any).sqlLogReset();
+  (globalThis as any).playgroundLogReset();
 
   const panelCode = await getJsCode();
   const timestampToForceReevaluation = `\n\nconst x${Date.now()} = false`;
@@ -132,9 +136,21 @@ async function runCode() {
     panelCode + timestampToForceReevaluation,
   );
 
-  await eval(
-    "import(" +
-      JSON.stringify("data:text/javascript;charset=utf-8," + encodedJs) +
-      ")",
-  );
+  const _console = window.console;
+
+  try {
+    (window as any).console = {
+      log: (window as any).playgroundLog,
+    };
+
+    await eval(
+      "import(" +
+        JSON.stringify("data:text/javascript;charset=utf-8," + encodedJs) +
+        ")",
+    );
+  } catch (e) {
+    (window as any).playgroundLog(e);
+  } finally {
+    window.console = _console;
+  }
 }

@@ -20,7 +20,7 @@ export const Sql = () => {
 
   return (
     <div style={{ fontSize: "14px" }}>
-      {(values || []).map((v, i) => (
+      {values.map((v, i) => (
         <pre key={i}>{v.query}</pre>
       ))}
     </div>
