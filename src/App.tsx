@@ -149,7 +149,7 @@ async function runCode() {
         ")",
     );
   } catch (e) {
-    (window as any).playgroundLog(e);
+    (globalThis as any).playgroundLog(e.stack);
   } finally {
     window.console = _console;
   }
