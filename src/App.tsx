@@ -148,7 +148,7 @@ async function runCode() {
         JSON.stringify("data:text/javascript;charset=utf-8," + encodedJs) +
         ")",
     );
-  } catch (e) {
+  } catch (e: any) {
     (globalThis as any).playgroundLog(e.stack);
   } finally {
     window.console = _console;
