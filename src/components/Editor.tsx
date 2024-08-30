@@ -118,12 +118,6 @@ async function editorStartup(editor: monaco.editor.IStandaloneCodeEditor) {
       "inmemory://model/node_modules/typesafe-query-builder/dist/index.d.ts",
   });
 
-  await loadFileIntoEditor({
-    httpPath: "playground/typesafe-query-builder/dist/index.d.ts",
-    monacoUri:
-      "inmemory://model/node_modules/typesafe-query-builder/dist/index.d.ts",
-  });
-
   // fake "playground" lib
   monaco.editor.createModel(
     JSON.stringify({ type: "module", types: "index.d.ts", main: "index.js" }),

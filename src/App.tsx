@@ -1,3 +1,4 @@
+import { Button, Tabs, Title } from "@mantine/core";
 import "@mantine/core/styles.css";
 import React from "react";
 import styles from "./App.module.css";
@@ -12,11 +13,19 @@ export const App: React.VFC = () => {
 
   return (
     <>
-      <h1 className={styles.Header}>Typesafe Query Builder Playground</h1>
-      <button onClick={runCode}>RUN</button>
+      <Title className={styles.Header}>Typesafe Query Builder Playground</Title>
+      <Button onClick={runCode}>RUN</Button>
       <div className={styles.Panels}>
         <div className={styles.Editor}>
-          <Editor size={width} />;
+          <Tabs variant="outline" defaultValue="example">
+            <Tabs.List pl="lg">
+              <Tabs.Tab value="example">example.ts</Tabs.Tab>
+            </Tabs.List>
+
+            <Tabs.Panel value="example">
+              <Editor size={width} />;
+            </Tabs.Panel>
+          </Tabs>
         </div>
         <div
           className={styles.Divider}
@@ -40,7 +49,21 @@ export const App: React.VFC = () => {
           }}
         />
         <div className={styles.Result}>
-          <Result />
+          <Tabs variant="outline" defaultValue="result">
+            <Tabs.List pl="lg">
+              <Tabs.Tab value="result">Result</Tabs.Tab>
+              <Tabs.Tab value="sql">SQL</Tabs.Tab>
+              <Tabs.Tab value="log">Log</Tabs.Tab>
+            </Tabs.List>
+
+            <Tabs.Panel value="result">
+              <Result />
+            </Tabs.Panel>
+
+            <Tabs.Panel value="sql"></Tabs.Panel>
+
+            <Tabs.Panel value="log"></Tabs.Panel>
+          </Tabs>
         </div>
       </div>
     </>

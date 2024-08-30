@@ -7,12 +7,15 @@
   display: flex;
 
   .Divider {
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
     width: 0.5rem;
-    background-color: #eee;
+    background-color: transparent;
+    border-left: 1px solid var(--mantine-color-default-border);
     cursor: col-resize;
 
     &:hover {
-      background-color: #aaa;
+      background-color: #eee;
     }
   }
 
